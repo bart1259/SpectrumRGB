@@ -1,0 +1,67 @@
+Sub SpectrumRGB()
+
+    Dim range As range
+    Set range = Selection
+
+    For Each cell In range
+        Debug.Print (cell.Address)
+        SetCellColor (cell.Address)
+    Next cell
+
+End Sub
+
+Sub SetCellColor(cellAddress)
+
+    Dim factor As Double
+    factor = 1#
+    Dim Wavelength As Double
+   
+    If Not IsNumeric(range(cellAddress).Value) Then
+        Exit Sub
+    End If
+    Wavelength = CDbl(range(cellAddress).Value)
+   
+    If ((Wavelength >= 380) And (Wavelength < 440)) Then
+        Red = -(Wavelength - 440) / (440 - 380)
+        Green = 0#
+        Blue = 1#
+    ElseIf ((Wavelength >= 440) And (Wavelength < 490)) Then
+        Red = 0#
+        Green = (Wavelength - 440) / (490 - 440)
+        Blue = 1#
+    ElseIf ((Wavelength >= 490) And (Wavelength < 510)) Then
+        Red = 0#
+        Green = 1#
+        Blue = -(Wavelength - 510) / (510 - 490)
+    ElseIf ((Wavelength >= 510) And (Wavelength < 580)) Then
+        Red = (Wavelength - 510) / (580 - 510)
+        Green = 1#
+        Blue = 0#
+    ElseIf ((Wavelength >= 580) And (Wavelength < 645)) Then
+        Red = 1#
+        Green = -(Wavelength - 645) / (645 - 580)
+        Blue = 0#
+    ElseIf ((Wavelength >= 645) And (Wavelength < 781)) Then
+        Red = 1#
+        Green = 0#
+        Blue = 0#
+    Else
+        Red = 0#
+        Green = 0#
+        Blue = 0#
+    End If
+   
+    If ((Wavelength >= 380) And (Wavelength < 420)) Then
+        factor = 0.3 + 0.7 * (Wavelength - 380) / (420 - 380)
+    ElseIf ((Wavelength >= 420) And (Wavelength < 701)) Then
+        factor = 1#
+    ElseIf ((Wavelength >= 701) And (Wavelength < 781)) Then
+        factor = 0.3 + 0.7 * (780 - Wavelength) / (780 - 700)
+    Else
+        factor = 0#
+    End If
+ 
+ range(cellAddress).Interior.Color = RGB(factor * Red * 255, factor * Green * 255, factor * Blue * 255)
+
+
+End Sub
